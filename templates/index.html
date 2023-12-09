@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Casa de Cambios</title>
+    <!-- Estilos omitidos por brevedad -->
+</head>
+<body>
+    <h1>Transacciones</h1>
+
+    <!-- Formulario para agregar una nueva transacción -->
+    <h2>Agregar Transacción</h2>
+    <form action="/" method="post">
+        <select name="tabla">
+            <option value="Transacciones_Dolares_Soles">Dólares a Soles</option>
+            <option value="Transacciones_Euros_Soles">Euros a Soles</option>
+            <!-- Agrega más opciones si necesitas -->
+        </select>
+        <input type="text" name="direccion_transaccion" placeholder="Dirección Transacción" required>
+        <input type="number" step="any" name="tipo_cambio" placeholder="Tipo de Cambio" required>
+        <input type="number" step="any" name="cantidad_original" placeholder="Cantidad Original" required>
+        <input type="number" step="any" name="cantidad_cambiada" placeholder="Cantidad Cambiada" required>
+        <input type="date" name="fecha" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <!-- Formulario para eliminar una transacción -->
+    <h2>Eliminar Transacción</h2>
+    <form action="/" method="post">
+        <select name="tabla_eliminar">
+            <option value="Transacciones_Dolares_Soles">Dólares a Soles</option>
+            <option value="Transacciones_Euros_Soles">Euros a Soles</option>
+            <!-- Agrega más opciones si necesitas -->
+        </select>
+        <input type="number" name="id_transaccion" placeholder="ID Transacción" required>
+        <button type="submit">Eliminar</button>
+    </form>
+
+    <!-- Tabla de transacciones para Dólares a Soles -->
+    <h2>Transacciones Dólares a Soles</h2>
+    <table>
+        <!-- Encabezados y filas de la tabla omitidos por brevedad -->
+        {% for transaccion in transacciones_dolares %}
+        <!-- Filas de tabla -->
+        {% endfor %}
+    </table>
+
+    <!-- Tabla de transacciones para Euros a Soles -->
+    <h2>Transacciones Euros a Soles</h2>
+    <table>
+        <!-- Encabezados y filas de la tabla omitidos por brevedad -->
+        {% for transaccion in transacciones_euros %}
+        <!-- Filas de tabla -->
+        {% endfor %}
+    </table>
+
+    <!-- Agrega aquí más tablas para otras transacciones si es necesario -->
+</body>
+</html>

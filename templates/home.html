@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiservicios Rojas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            background-size: cover;
+            padding: 40px 20px;
+        }
+        h1 {
+            color: #007bff;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #555;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+        .button-container a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 25px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .button-container a:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #666;
+        }
+        @media (max-width: 768px) {
+            .button-container a {
+                padding: 10px 15px;
+                font-size: 16px;
+            }
+            footer {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Multiservicios Rojas</h1>
+    <p class="description">
+        Bienvenido a la base de datos de Multiservicios Rojas. Aquí puedes agregar, eliminar y visualizar sumas de transacciones en dólares y euros.
+    </p>
+    <div class="button-container">
+        <a href="/dolares">Transacciones en Dólares</a>
+        <a href="/euros">Transacciones en Euros</a>
+    </div>
+    <footer>
+        © 2023 Multiservicios Rojas. Todos los derechos reservados.
+    </footer>
+</body>
+</html>

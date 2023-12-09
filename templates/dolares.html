@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transacciones en Dólares</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #333;
+        }
+        h1 {
+            color: #0056b3;
+            margin-bottom: 30px;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+            max-width: 600px;
+            margin: auto;
+        }
+        .form-container form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            align-items: center;
+        }
+        input, select, button {
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            font-size: 16px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        a {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+        .sumas-por-dia {
+            background-color: #ffffff;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+    </style>
+    <script>
+        function calcularCantidadCambiada() {
+            var direccionTransaccion = document.querySelector('[name="direccion_transaccion"]').value;
+            var tipoCambio = parseFloat(document.querySelector('[name="tipo_cambio"]').value);
+            var cantidadOriginal = parseFloat(document.querySelector('[name="cantidad_original"]').value);
+            var cantidadCambiadaInput = document.querySelector('[name="cantidad_cambiada"]');
+
+            if (direccionTransaccion === 'Compra') {
+                cantidadCambiadaInput.value = (tipoCambio * cantidadOriginal).toFixed(2);
+            } else {
+                cantidadCambiadaInput.value = (cantidadOriginal / tipoCambio).toFixed(2);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Transacciones en Dólares</h1>
+
+    <div class="form-container">
+        <form action="/dolares" method="post" oninput="calcularCantidadCambiada()">
+            <select name="direccion_transaccion">
+                <option value="Compra">Compra</option>
+                <option value="Venta">Venta</option>
+            </select>
+            <input type="number" step="any" name="tipo_cambio" placeholder="Tipo de Cambio" required>
+            <input type="number" step="any" name="cantidad_original" placeholder="Cantidad Original" required>
+            <input type="number" step="any" name="cantidad_cambiada" placeholder="Cantidad Cambiada" required readonly>
+            <button type="submit">Agregar Transacción</button>
+        </form>
+    </div>
+
+    <table id="tablaTransaccionesDolares">
+        <thead>
+            <tr>
+                <th>ID Transacción</th>
+                <th>Dirección Transacción</th>
+                <th>Tipo de Cambio</th>
+                <th>Cantidad Original</th>
+                <th>Cantidad Cambiada</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se insertarán las filas de la tabla desde el servidor -->
+            {% for transaccion in transacciones %}
+            <tr>
+                <td>{{ transaccion[0] }}</td>
+                <td>{{ transaccion[1] }}</td>
+                <td>{{ transaccion[2] }}</td>
+                <td>{{ transaccion[3] }}</td>
+                <td>{{ transaccion[4] }}</td>
+                <td>{{ transaccion[5] }}</td>
+                <td>
+                    <form action="/eliminar_dolares" method="post">
+                        <input type="hidden" name="id_transaccion" value="{{ transaccion[0] }}">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="sumas-por-dia">
+        <h2>Sumas por Día</h2>
+        <table>
+            <tr>
+                <th>Fecha</th>
+                <th>Dirección Transacción</th>
+                <th>Total Cantidad Cambiada</th>
+            </tr>
+            {% for suma in sumas_por_dia %}
+            <tr>
+                <td>{{ suma[0] }}</td>
+                <td>{{ suma[1] }}</td>
+                <td>{{ suma[2] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <a href="/">Volver al inicio</a>
+
+    <script>
+        $(document).ready(function() {
+            $('#tablaTransaccionesDolares').DataTable();
+        });
+    </script>
+</body>
+</html>
